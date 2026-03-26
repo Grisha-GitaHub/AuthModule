@@ -3,4 +3,3 @@ fastapi
 "pydantic[email]"
 pydantic-settings
 "sqlalchemy[asyncio]"
-asyncpg
