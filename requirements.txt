@@ -2,3 +2,4 @@ fastapi
 "uvicorn[standart]"
 "pydantic[email]"
 pydantic-settings
+"sqlalchemy[asyncio]"
