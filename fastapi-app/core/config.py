@@ -3,10 +3,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 from pydantic.networks import UrlConstraints
 from typing import Annotated
 
-SqliteUrl = Annotated[
-    AnyUrl,
-    UrlConstraints(allowed_schemas=["sqlite", "sqlite+aiosqlite"])
-]
+
 
 
 class RunConfig(BaseModel):
@@ -17,12 +14,12 @@ class ApiPrefix(BaseModel):
     prefix: str = "/api"
  
 class DatabaseConfig(BaseModel):
-    url: SqliteUrl
-    echo: bool = False,
-    echo_pool: bool = False,
-    pool_size: int = 5,
-    max_overflow: int = 10,
-    
+    url: str
+    echo: bool = False
+    echo_pool: bool = False
+    pool_size: int = 5
+    max_overflow: int = 10
+
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(
         env_file=("env.template", ".env"),
@@ -32,6 +29,6 @@ class Settings(BaseSettings):
     )
     run: RunConfig = RunConfig()
     api: ApiPrefix = ApiPrefix()
-    db: DatabaseConfig
+    db: DatabaseConfig 
 
 settings = Settings()

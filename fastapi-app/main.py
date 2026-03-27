@@ -1,3 +1,6 @@
+import os
+print(f"Текущая директория: {os.getcwd()}")
+print(f"Файл .env существует: {os.path.exists('.env')}")
 from contextlib import asynccontextmanager
 
 import uvicorn
@@ -6,11 +9,12 @@ from fastapi import FastAPI
 from core.config import settings
 
 from api import router as api_router
-from core.models import db_helper
+from core.models import db_helper, Base
 
 @asynccontextmanager
 async def lifespan(main_app: FastAPI):
-    
+    async with db_helper.engine.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)
     yield
     await db_helper.dispose()
     
