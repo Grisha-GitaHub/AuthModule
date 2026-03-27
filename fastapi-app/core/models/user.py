@@ -9,3 +9,4 @@ class User(Base):
     userpatronic: Mapped[str]
     email: Mapped[str] = mapped_column(unique=True)
     hashed_password: Mapped[str]
+    is_active: bool = mapped_column(default=True)
