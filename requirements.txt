@@ -4,3 +4,4 @@ fastapi
 pydantic-settings
 "sqlalchemy[asyncio]"
 asyncio
+aiosqlite
