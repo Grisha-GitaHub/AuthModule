@@ -1,0 +1,26 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python: FastAPI",
+            "type": "debugpy",
+            "request": "launch",
+            // Указываем путь к python внутри вашего venv (для Windows)
+            "python": "${workspaceFolder}/venv/Scripts/python.exe", 
+            "module": "uvicorn",
+            "args": [
+                "main:main_app", 
+                "--reload",
+                "--port", "8000"
+            ],
+            "jinja": true,
+            "justMyCode": true,
+            "cwd": "${workspaceFolder}/fastapi-app", 
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}/fastapi-app",
+                // Принудительно заставляем искать .env в папке fastapi-app
+                "ENV_FILE": "${workspaceFolder}/fastapi-app/.env" 
+            }
+        }
+    ]
+}
