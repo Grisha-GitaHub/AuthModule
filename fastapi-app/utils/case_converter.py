@@ -52,4 +52,4 @@ def method_name_to_upper_camel_case(input_str: str) -> str:
         # we can't use .removeprefix here because of the case (upper / lower)
         prefix_size = len("ri_sdk_")
         input_str = input_str[prefix_size:]
-    return "".join(w[0].upper() + w[1:] for w in input_str.split("_"))
+    return "".join(w[0].upper() + w[1:] for w in input_str.split("_"))  
