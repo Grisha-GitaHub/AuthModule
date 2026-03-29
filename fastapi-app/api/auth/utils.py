@@ -1,14 +1,18 @@
 import bcrypt
-import jwt
-from pathlib import Path
+import jwt as pyjwt
 from core.config import settings
+
 
 def encode_jwt(
     payload: dict,
-    private_key: Path = settings.auth_JWT.private_key_path.read_text(),
-    algorithm: Path = settings.auth_JWT.algorithm
-):
-    encoded = jwt.encode(
+    private_key: str | None = None,
+    algorithm: str | None = None
+) -> str:
+    if private_key is None:
+        private_key = settings.auth_JWT.private_key_path.read_text()
+    if algorithm is None:
+        algorithm = settings.auth_JWT.algorithm
+    encoded = pyjwt.encode(
         payload,
         private_key,
         algorithm=algorithm
@@ -18,28 +22,31 @@ def encode_jwt(
 
 def decoded_jwt(
     token: str | bytes,
-    public_key: Path = settings.auth_JWT.public_key_path.read_text(),
-    algorithm: Path = settings.auth_JWT.algorithm
-):
-    decoded = jwt.decode(
+    public_key: str | None = None,
+    algorithm: str | None = None
+) -> dict:
+    if public_key is None:
+        public_key = settings.auth_JWT.public_key_path.read_text()
+    if algorithm is None:
+        algorithm = settings.auth_JWT.algorithm
+    decoded = pyjwt.decode(
         token,
         public_key,
-        algorithm[algorithm]
+        algorithms=[algorithm]
     )
     return decoded
 
-def hash_password(
-    password: str
-) -> bytes:
+
+def hash_password(password: str) -> bytes:
     salt = bcrypt.gensalt()
     pwd_bytes: bytes = password.encode()
-    return bcrypt.hashpw(pwd_bytes, salt).decode
+    return bcrypt.hashpw(pwd_bytes, salt)
 
-def validate_password(
-    password: str,
-    hashed_password: bytes
-) -> bool:
-    return bcrypt.checkpw(
+
+def validate_password(password: str, hashed_password: str | bytes) -> bool:
+    if isinstance(hashed_password, str):
+        hashed_password = hashed_password.encode()
+    return bool(bcrypt.checkpw(
         password=password.encode(),
-        hashed_password=hash_password.encode('utf-8')
-    )
+        hashed_password=hashed_password
+    ))  
