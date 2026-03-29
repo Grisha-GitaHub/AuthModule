@@ -1,9 +1,8 @@
 fastapi
-"uvicorn[standart]"
-"pydantic[email]"
+uvicorn[standard]
+pydantic[email]
 pydantic-settings
-"sqlalchemy[asyncio]"
-asyncio
+sqlalchemy[asyncio]
 aiosqlite
 bcrypt
-jwt
+PyJWT
