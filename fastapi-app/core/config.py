@@ -1,19 +1,18 @@
 from pathlib import Path
 
-from pydantic import BaseModel, AnyUrl
+from pydantic import BaseModel
 from pydantic_settings import BaseSettings, SettingsConfigDict
-from pydantic.networks import UrlConstraints
-
-
 
 
 class RunConfig(BaseModel):
     host: str = "0.0.0.0"
     port: int = 8000
 
+
 class ApiPrefix(BaseModel):
     prefix: str = "/api"
- 
+
+
 class DatabaseConfig(BaseModel):
     url: str
     echo: bool = False
@@ -21,12 +20,14 @@ class DatabaseConfig(BaseModel):
     pool_size: int = 5
     max_overflow: int = 10
 
+
 class AuthJWT(BaseModel):
-    private_key_path: Path = Path("certs\private.pem")
-    public_key_path: Path = Path("certs\public.pem")
+    private_key_path: Path = Path("certs/private.pem")
+    public_key_path: Path = Path("certs/public.pem")
     algorithm: str = "RS256"
     TOKEN_TYPE: str = "Bearer"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 5
+
 
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(
@@ -37,7 +38,8 @@ class Settings(BaseSettings):
     )
     run: RunConfig = RunConfig()
     api: ApiPrefix = ApiPrefix()
-    db: DatabaseConfig 
+    db: DatabaseConfig
     auth_JWT: AuthJWT = AuthJWT()
 
-settings = Settings()
+
+settings = Settings()  
