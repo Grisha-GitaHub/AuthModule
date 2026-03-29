@@ -1,21 +1,32 @@
-from pydantic import BaseModel, ConfigDict, EmailStr
+from pydantic import BaseModel, ConfigDict, EmailStr, Field
 
 
 class CreateUser(BaseModel):
-    username: str
-    password: str | bytes
-    check_password: str | bytes
+    username: str = Field(..., min_length=1, max_length=50)
+    userfamily: str = Field(..., min_length=1, max_length=50)
+    userpatronic: str = Field(..., min_length=1, max_length=50)
     email: EmailStr
-    
+    password: str = Field(..., min_length=6)
+    check_password: str = Field(..., min_length=6)
+
+
 class LoginUser(BaseModel):
     email: EmailStr
-    password: str | bytes
-    
+    password: str
+
+
 class UserSchema(BaseModel):
-    model_config = ConfigDict(strict=True)
+    model_config = ConfigDict(from_attributes=True)
+    id: int
     username: str
     userfamily: str
     userpatronic: str
-    hashed_password: str | bytes
     email: EmailStr
     is_active: bool = True
+
+
+class UpdateUser(BaseModel):
+    username: str | None = Field(None, min_length=1, max_length=50)
+    userfamily: str | None = Field(None, min_length=1, max_length=50)
+    userpatronic: str | None = Field(None, min_length=1, max_length=50)
+    password: str | None = Field(None, min_length=6)  
